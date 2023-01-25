@@ -1,11 +1,27 @@
 CREATE TABLE journeys (
     id SERIAL PRIMARY KEY,
-    deperature_time TIMESTAMP WITHOUT TIME ZONE,
+    departure_time TIMESTAMP WITHOUT TIME ZONE,
     return_time TIMESTAMP WITHOUT TIME ZONE,
-    deperature_station_id INTEGER,
-    deperature_station_name TEXT,
+    departure_station_id INTEGER,
+    departure_station_name TEXT,
     return_station_id INTEGER,
     return_station_name TEXT,
-    covered_distance INTEGER,
-    duration INTEGER
+    covered_distance_m INTEGER,
+    duration_s INTEGER
 );
+
+INSERT INTO journeys ( 
+    id, 
+    departure_time, 
+    return_time, 
+    departure_station_id,
+    departure_station_name,
+    return_station_id,
+    return_station_name,
+    covered_distance_m,
+    duration_s
+) 
+VALUES
+(),
+();
+
