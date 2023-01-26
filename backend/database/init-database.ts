@@ -118,4 +118,4 @@ const main = async () => {
     insertCsvToDatabase(csvData);
   });
 };
-main();
+//main();
