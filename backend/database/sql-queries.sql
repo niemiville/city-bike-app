@@ -58,20 +58,3 @@ INSERT INTO stations (
     ) VALUES 
 (),
 ();
-
-INSERT INTO stations ( 
-    fid,
-    id,
-    name_fi,
-    name_sv,
-    name_en,
-    address_fi,
-    address_sv,
-    city_fi,
-    city_sv,
-    operator,
-    capacity,
-    coordinate_x,
-    coordinate_y
-    ) VALUES 
-(1, 501, 'Hanasaari', 'Hanaholmen','Hanasaari','Hanasaarenranta 1','Hanaholmsstranden 1','Espoo','Esbo','CityBike Finland',10,24.840319,60.16582);
