@@ -11,7 +11,6 @@ CREATE TABLE journeys (
 );
 
 INSERT INTO journeys ( 
-    id, 
     departure_time, 
     return_time, 
     departure_station_id,
@@ -25,3 +24,54 @@ VALUES
 (),
 ();
 
+CREATE TABLE stations (
+    primary_id SERIAL PRIMARY KEY,
+    fid INTEGER,
+    id INTEGER,
+    name_fi TEXT,
+    name_sv TEXT,
+    name_en TEXT,
+    address_fi TEXT,
+    address_sv TEXT,
+    city_fi TEXT,
+    city_sv TEXT,
+    operator TEXT,
+    capacity INTEGER,
+    coordinate_x DECIMAL,
+    coordinate_y DECIMAL
+);
+
+INSERT INTO stations ( 
+    fid,
+    id,
+    name_fi,
+    name_sv,
+    name_en,
+    address_fi,
+    address_sv,
+    city_fi,
+    city_sv,
+    operator,
+    capacity,
+    coordinate_x,
+    coordinate_y
+    ) VALUES 
+(),
+();
+
+INSERT INTO stations ( 
+    fid,
+    id,
+    name_fi,
+    name_sv,
+    name_en,
+    address_fi,
+    address_sv,
+    city_fi,
+    city_sv,
+    operator,
+    capacity,
+    coordinate_x,
+    coordinate_y
+    ) VALUES 
+(1, 501, 'Hanasaari', 'Hanaholmen','Hanasaari','Hanasaarenranta 1','Hanaholmsstranden 1','Espoo','Esbo','CityBike Finland',10,24.840319,60.16582);

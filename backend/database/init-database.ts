@@ -21,7 +21,34 @@ const createJourneysTable = async () => {
       return_station_name TEXT,
       covered_distance_m INTEGER,
       duration_s INTEGER
-      );`;
+    );`;
+
+    await client.query(sql);
+    client.release();
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+const createStationsTable = async () => {
+  try {
+    const client = await pool.connect();
+    const sql = `CREATE TABLE stations (
+      primary_id SERIAL PRIMARY KEY,
+      fid INTEGER,
+      id INTEGER,
+      name_fi TEXT,
+      name_sv TEXT,
+      name_en TEXT,
+      address_fi TEXT,
+      address_sv TEXT,
+      city_fi TEXT,
+      city_sv TEXT,
+      operator TEXT,
+      capacity INTEGER,
+      coordinate_x DECIMAL,
+      coordinate_y DECIMAL
+    );`;  
 
     await client.query(sql);
     client.release();
@@ -56,7 +83,7 @@ const toPgTimestamp = (strDate: string) => {
   }
 };
 
-const insertCsvToDatabase = async (csv: Journey[]) => {
+const insertJourneysCsvToDatabase = async (csv: Journey[]) => {
   const sqlQueryStart = `INSERT INTO journeys ( 
     departure_time, 
     return_time, 
@@ -100,6 +127,70 @@ const insertCsvToDatabase = async (csv: Journey[]) => {
   }
 }
 
+const handleQuotes = (str: string) => {  
+  try{
+    return str.replace("'", "''");
+  } catch (error){
+    console.error(error);
+  }
+};
+
+const inserStationsCsvToDatabase = async (csv: any[]) => {
+  const sqlQueryStart = `INSERT INTO stations ( 
+    fid,
+    id,
+    name_fi,
+    name_sv,
+    name_en,
+    address_fi,
+    address_sv,
+    city_fi,
+    city_sv,
+    operator,
+    capacity,
+    coordinate_x,
+    coordinate_y
+    ) VALUES `;
+  
+  let sqlQuery = ``;
+  let rowsToInsert = 0; //Max 1000 rows at once for PostgreSQL INSERT query.
+  for(let j = 0; j < csv.length; j++){
+    sqlQuery += `(${csv[j]['FID']}, 
+      ${csv[j]['ID']}, 
+      '${handleQuotes(csv[j]['Nimi'])}', 
+      '${handleQuotes(csv[j]['Namn'])}', 
+      '${handleQuotes(csv[j]['Name'])}', 
+      '${csv[j]['Osoite']}', 
+      '${csv[j]['Adress']}', 
+      '${csv[j]['Kaupunki']}',
+      '${csv[j]['Stad']}',
+      '${csv[j]['Operaattor']}',
+      ${csv[j]['Kapasiteet']},
+      ${csv[j]['x']},
+      ${csv[j]['y']}
+      )`;
+      
+    if(rowsToInsert < 1000 && j <= csv.length - 2) {
+      sqlQuery += ', '
+    } else {
+      sqlQuery += ';'
+      try {
+
+        //Tulee virhe kun osassa nimistä on heittomerkki ' mukana.
+        const client = await pool.connect();
+        await client.query((sqlQueryStart + sqlQuery));
+        client.release();
+      } catch (error) {
+        console.log((sqlQueryStart + sqlQuery))
+        console.log(error);
+      }
+      sqlQuery = ``;
+      rowsToInsert = 0;
+    }
+  }
+}
+
+
 type Journey = {
   'Departure': string;
   'Return': string;
@@ -112,10 +203,15 @@ type Journey = {
 }; 
 
 const main = async () => {
-  createJourneysTable();
+/*   createJourneysTable();
   fs.readdirSync('./data/journeys/').forEach(async fileName => {
     const csvData: Journey[] = await readCsv('./data/journeys/' + fileName);
-    insertCsvToDatabase(csvData);
+    insertJourneysCsvToDatabase(csvData);
+  }); */
+  //createStationsTable();
+  fs.readdirSync('./data/stations/').forEach(async fileName => {
+    const csvData: any[] = await readCsv('./data/stations/' + fileName);
+    inserStationsCsvToDatabase(csvData);
   });
 };
 //main();
