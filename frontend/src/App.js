@@ -8,6 +8,10 @@ function App() {
   const [pageInputFieldValue, setPageInputFieldValue] = useState(0);
 
   useEffect(() => {
+    if(page < 0){
+      setPage(0);
+    }
+    setPageInputFieldValue(page);
     getJourneysPage(page).then(journey => {
       setJourneys(journey);
     })
@@ -37,8 +41,10 @@ function App() {
           )}
         </tbody>
       </table>
+      <input className="button" type="button" onClick={() => setPage(parseInt(page) - 1)} value="Previous page" />
       <input type="number" value={pageInputFieldValue} onChange={e=> setPageInputFieldValue(e.target.value)} />
-      <button onClick={() => setPage(pageInputFieldValue)}>Go to page</button>
+      <input className="button" type="button" onClick={() => setPage(pageInputFieldValue)} value="Go to page" />
+      <input className="button" type="button" onClick={() => setPage(parseInt(page) + 1)} value="Next page" />
     </div>
   );
 }
