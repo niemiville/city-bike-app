@@ -1,6 +1,6 @@
-/data
+/data/journeys/*
+/data/stations/*
 /node_modules
 /build
-.env
 misc.txt
 Output.txt

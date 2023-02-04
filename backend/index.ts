@@ -87,7 +87,8 @@ const unknownEndpoint = (_request: Request, response: Response) => {
   
 app.use(unknownEndpoint)
 
-app.listen(process.env.PORT, () => {
+const PORT = process.env.PORT || 4000;
+app.listen(PORT, () => {
   void connectToDB();
-  console.log(`Backend server is running on port ${process.env.PORT}`);
+  console.log(`Backend server is running on port ${PORT}`);
 });
