@@ -11,16 +11,17 @@ My implementation of [Solita Dev Academy Finland 2023 pre-assignment](https://gi
 ### Create PostgreSQL Docker container  
 
 2. Install Docker Desktop v.4.16.3 (probably other versions work too) and keep it open
-3. Open command prompt and pull docker image for postgresql with command `docker pull postgres`  
+3. Open command prompt and pull docker image for postgresql with command `docker pull postgres` (Postgre version 
+15.1-1.pgdg110+1)  
 4. Create and run postgres container and user with command `docker run --name postgresql -e POSTGRES_USER=myusername -e POSTGRES_PASSWORD=mypassword -p 5432:5432 -d postgres`  
 5. Start the container if not already  
 
 ### Install Node dependencies
-6. Run command `npm install` in directories city-bike-app/backend and city-bike-app/frontend
+6. Run command `npm install` in directories `city-bike-app/backend` and `city-bike-app/frontend`
 
 ### Set environment variables
-7. Set environment variables to .env files in /backend directory and make sure /frontend/src/services/services.js file has same port in the api url (4000 by default).  
-(I will probably leave .env file to the repository because this app is run locally right now, so it doesn't matter if others see them. Unless you changed the PostgreSQL container's credentials or other settings, the current .env values should be good. If the app is run online, database credentials should be changed.)  
+7. Set environment variables to .env files in `city-bike-app/backend` directory and make sure `city-bike-app/frontend/src/services/services.js` file has same port in the api url (4000 by default).  
+(I will leave .env file to the repository because this app is only run locally right now so it is easier to initialize the app. Unless you changed the PostgreSQL container's credentials or other settings, the current .env values should be good. If the app is run online, database credentials should be changed and .env keep hidden.)  
 
 ### Initialize the database
 8. Download the journey data and station data from its original sources.  
