@@ -29,21 +29,7 @@ const connectToDB = async () => {
   }
 };
 
-app.get("/journeys", async (_req: Request, res: Response) => {
-  try {
-    const client = await pool.connect();
-
-    const sql = "SELECT * FROM journeys LIMIT 20;";
-    const { rows } = await client.query(sql);
-    const todos = rows;
-    client.release();
-    res.send(todos)
-  } catch (error) {
-      console.log(error);
-  }
-});
-
-app.get("/journeys/:page", async (req: Request, res: Response) => {
+app.get("/api/journeys/:page", async (req: Request, res: Response) => {
   try {
     const client = await pool.connect();
     const journeysPerPage = 20;
@@ -58,24 +44,41 @@ app.get("/journeys/:page", async (req: Request, res: Response) => {
   }
 });
 
-app.get("/test", (_req: Request, res: Response) => {
-  res.send("hi");
-});
-
-app.get("/test2", async (_req: Request, res: Response) => {
+app.get("/api/stations/:page", async (req: Request, res: Response) => {
   try {
     const client = await pool.connect();
-
-    const sql = "SELECT * FROM todo";
+    const stationsPerPage = 20;
+    const offset = parseInt(req.params.page) * stationsPerPage;
+    const sql = `SELECT fid, id, name_en, address_fi
+                FROM stations
+                LIMIT ${stationsPerPage}
+                OFFSET ${offset};`;
     const { rows } = await client.query(sql);
-    const todos = rows;
-
     client.release();
+    res.send(rows)
+  } catch (error) {
+      console.log(error);
+  }
+});
 
-    res.send(todos);
-} catch (error) {
-    res.status(400).send(error);
-}
+app.get("/api/stations/singleview/:id", async (req: Request, res: Response) => {
+  try {
+    const client = await pool.connect();
+    const sql = `SELECT fid, stations.id AS id, name_en, address_fi,
+                (SELECT COUNT(*)
+                FROM journeys
+                WHERE journeys.departure_station_id = ${req.params.id}) AS departures, 
+                (SELECT COUNT(*)
+                FROM journeys
+                WHERE journeys.return_station_id = ${req.params.id}) AS returns
+                FROM stations
+                WHERE stations.id = ${req.params.id};`;
+    const { rows } = await client.query(sql);
+    client.release();
+    res.send(rows)
+  } catch (error) {
+      console.log(error);
+  }
 });
 
 const unknownEndpoint = (_request: Request, response: Response) => {
