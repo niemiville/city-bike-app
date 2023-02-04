@@ -1,3 +1,7 @@
+/*
+Queries used in database creation. These are not required to run manually. init-database.ts has these queries implemented.
+*/
+
 CREATE TABLE journeys (
     id SERIAL PRIMARY KEY,
     departure_time TIMESTAMP WITHOUT TIME ZONE,
@@ -58,3 +62,18 @@ INSERT INTO stations (
     ) VALUES 
 (),
 ();
+
+/*
+Query for counting departure and returning journeys per stations
+*/
+
+SELECT fid, stations.id, name_en, address_fi,
+(SELECT COUNT(*)
+FROM journeys
+WHERE journeys.departure_station_id = stations.id) AS departures, 
+(SELECT COUNT(*)
+FROM journeys
+WHERE journeys.return_station_id = stations.id) AS returns
+FROM stations
+LIMIT 5
+OFFSET 0;

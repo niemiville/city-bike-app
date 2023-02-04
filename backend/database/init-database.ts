@@ -175,8 +175,6 @@ const inserStationsCsvToDatabase = async (csv: any[]) => {
     } else {
       sqlQuery += ';'
       try {
-
-        //Tulee virhe kun osassa nimistä on heittomerkki ' mukana.
         const client = await pool.connect();
         await client.query((sqlQueryStart + sqlQuery));
         client.release();
@@ -190,7 +188,6 @@ const inserStationsCsvToDatabase = async (csv: any[]) => {
   }
 }
 
-
 type Journey = {
   'Departure': string;
   'Return': string;
@@ -203,15 +200,15 @@ type Journey = {
 }; 
 
 const main = async () => {
-/*   createJourneysTable();
+  createJourneysTable();
   fs.readdirSync('./data/journeys/').forEach(async fileName => {
     const csvData: Journey[] = await readCsv('./data/journeys/' + fileName);
     insertJourneysCsvToDatabase(csvData);
-  }); */
-  //createStationsTable();
+  });
+  createStationsTable();
   fs.readdirSync('./data/stations/').forEach(async fileName => {
     const csvData: any[] = await readCsv('./data/stations/' + fileName);
     inserStationsCsvToDatabase(csvData);
   });
 };
-//main();
+main();
