@@ -45,7 +45,7 @@ Also, there is a dataset that has information about Helsinki Region Transport’
 
 ## Implemented features  
 
-All the recommended features plus pagination for journey and station view. No tests are done.
+All the recommended features plus pagination for journey and station view. No tests have been done.  
 
 ## Chosen technologies
 
